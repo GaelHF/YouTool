@@ -1,9 +1,17 @@
 import tkinter as tk
 import requests
 from pytube import YouTube
+import os
+
 
 video_directory = "../Videos"
 thumbnail_directory = "../Thumbnails"
+
+if not os.path.exists(video_directory):
+    os.makedirs(video_directory)
+
+if not os.path.exists(thumbnail_directory):
+    os.makedirs(thumbnail_directory)
 
 def download_youtube_video():
     url = link_input.get()
