@@ -19,4 +19,4 @@ The Ultimate YouTube Tool
 - 
 ## Demo
 
-![Demo](https://github.com/GaelHF/YouTool/blob/main/Demo.png?raw=true)
+![Preview](https://github.com/GaelHF/YouTool/blob/main/Preview.png?raw=true)
