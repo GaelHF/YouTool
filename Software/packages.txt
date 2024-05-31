@@ -1,3 +1,0 @@
-pytube==15.0.0
-tk==0.1.0
-requests
