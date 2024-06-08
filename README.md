@@ -1,5 +1,5 @@
 
-![Logo](https://raw.githubusercontent.com/GaelHF/YouTool/main/Software/icon.ico)
+![Logo](https://raw.githubusercontent.com/GaelHF/YouTool/main/icon.ico)
 
 
 # YouTool
