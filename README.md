@@ -16,7 +16,7 @@ The Ultimate YouTube Tool
 - YouTube Videos and Shorts Download
 - YouTube Videos Thumbnails Download
 - Easy UI
-- 
+
 ## Demo
 
 ![Preview](https://github.com/GaelHF/YouTool/blob/main/Preview.png?raw=true)
