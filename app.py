@@ -38,8 +38,11 @@ def _find_ffmpeg_dir():
 
 _FFMPEG_DIR = _find_ffmpeg_dir()
 
+# Pas de player_client forcé : yt-dlp choisit lui-même les clients YouTube qui
+# fonctionnent (forcer android_vr/android provoque des HTTP 403 faute de PO Token).
 YDL_BASE = {
-    "extractor_args": {"youtube": {"player_client": ["android_vr", "android"]}},
+    "quiet": True,
+    "no_warnings": True,
 }
 if _FFMPEG_DIR:
     YDL_BASE["ffmpeg_location"] = _FFMPEG_DIR
@@ -95,6 +98,14 @@ LANGS = {
         "log_thumb_saved": "✅  Thumbnail saved: ",
     },
 }
+
+
+def _error_text(e):
+    """Message d'erreur lisible, jamais vide (yt-dlp préfixe par 'ERROR:')."""
+    msg = str(e).strip()
+    if msg.upper().startswith("ERROR:"):
+        msg = msg[6:].strip()
+    return msg or type(e).__name__
 
 
 def _resource_path(name):
@@ -442,9 +453,11 @@ class YouTool(ctk.CTk):
             self.after(0, lambda: self.v_bar_lbl.configure(text=self.t("done")))
             self._log(self.t("log_saved") + self.download_path)
         except Exception as e:
+            msg = _error_text(e)
+            short = msg if len(msg) <= 80 else msg[:77] + "…"
             self.after(0, lambda: self.v_bar.set(0))
-            self.after(0, lambda: self.v_bar_lbl.configure(text=self.t("error")))
-            self._log(f"❌  {e}")
+            self.after(0, lambda: self.v_bar_lbl.configure(text=f"{self.t('error')} : {short}"))
+            self._log(f"❌  {msg}")
         finally:
             self.is_busy = False
             self.after(0, lambda: self.v_btn.configure(state="normal", text=self.t("download")))
@@ -500,7 +513,7 @@ class YouTool(ctk.CTk):
             self.after(0, lambda: self.thumb_title_lbl.configure(text=title))
             self._log(f"🖼  {title}")
         except Exception as e:
-            self._log(f"❌  {e}")
+            self._log(f"❌  {_error_text(e)}")
         finally:
             self.after(0, lambda: self.t_preview_btn.configure(
                 state="normal", text=self.t("preview")))
@@ -528,7 +541,7 @@ class YouTool(ctk.CTk):
             img.save(dest, "JPEG", quality=95)
             self._log(self.t("log_thumb_saved") + dest)
         except Exception as e:
-            self._log(f"❌  {e}")
+            self._log(f"❌  {_error_text(e)}")
         finally:
             self.is_busy = False
             self.after(0, lambda: self.t_btn.configure(
